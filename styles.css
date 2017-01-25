@@ -1,0 +1,52 @@
+html {
+  font-family: sans-serif;
+  hight: 100%;
+}
+
+body {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  /*display:block;*/
+
+}
+
+h2 {
+  text-align: center;
+}
+
+.container {
+  margin: auto;
+  width: 550px;
+}
+.twt {
+  padding: 10px;
+  border: 1px solid #e1e8ed;
+  cursor: pointer;
+
+}
+.twt:hover {
+  background-color: #f5f8fa;
+}
+
+.twt__header {
+  font-size-adjust: 100%;
+  font-size: 13px;
+  color: #8899a6;
+}
+.twt__user {
+}
+
+.twt__fullname {
+  color: black;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.twt__timestamp:before {
+    content: "\00b7 ";
+}
+
+.twt__messsage {
+  text-align: center;
+}
