@@ -4,69 +4,100 @@
     <link rel="stylesheet" href="styles.css">
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
-    <script src="moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+    <!-- <script src="moment.min.js"></script> -->
   </head>
   <body>
   <h2> Tweetlers </h2>
   <div class="container">
+    <button class="btn__refresh">Refresh</button>
+    <div class="alltweets"></div>
+    <div class="twt__timeline"></div>
   </div>
 
     <script>
 
       $(document).ready(function(){
 
+        $('.btn__refresh').on('click', function(e) {
+          e.preventDefault();
+          reload();
+        });
+
         var _template = `<div><div class="twt">
         <div class="twt__header">
-        <span class="twt__fullname"></span>
+        <span class="twt__fullname"><a href=""></a></span>
         <span class="twt__user"></span>
         <span class="twt__timestamp"></span>
         </div>
         <div class="twt__message"></div>
         </div></div>`;
-        // console.log('_template', _template);
 
         var reload = function() {
-
           var result = [];
           var index = streams.home.length - 1;
 
-          while(index >= 0){
+          while(index >= streams.home.length - 10){
             var tweet = streams.home[index];
 
             var $newTweet = $(_template);
 
-            $newTweet.find('.twt__fullname').text(tweet.user);
+            $newTweet.find('.twt__fullname a').text(tweet.user);
             $newTweet.find('.twt__user').text('@' + tweet.user);
             $newTweet.find('.twt__timestamp').text(' ' + moment(tweet.created_at).fromNow());
-            // $newTweet.find('.twt__timestamp').text(' ' + tweet.created_at.toUTCString());
             $newTweet.find('.twt__message').text(tweet.message);
 
             result.push($newTweet.html().trim())
             index -= 1;
           }
+          console.log(result.length);
 
           var $newTweetHtml = $(result.join(''));
-          $newTweetHtml.appendTo('.container');
+          $('.alltweets').html('');
+          $newTweetHtml.appendTo('.alltweets');
 
-          // setTimeout(($('.container').html('')), 2000);
+          $('.twt__timeline').hide();
 
-          // setTimeout(reload, 2000);
+          $('a').on('click', function(event) {
+            event.preventDefault();
+            var user = $(this).text();
 
-          // var myItems = [];
-          // var myList = $( "#myList" );
-          //
-          // for ( var i = 0; i < 100; i++ ) {
-          //     myItems.push( "<li>item " + i + "</li>" );
-          // }
-          //
-          // myList.append( myItems.join( "" ) );
+            getUserTimeline(user);
+          });
 
+          var getUserTimeline = function(user) {
+            var _timeline = `<div><div class="twt">
+            <div class="twt__header">
+            <span class="twt__user"></span>
+            <span class="twt__timestamp"></span>
+            </div>
+            <div class="twt__message"></div>
+            </div></div>`;
 
+            var result = [];
+            var userArr = streams.users[user];
+
+            for (var i = userArr.length - 1; i >= 0; i--) {
+              var timeline = userArr[i];
+              var $timeline = $(_timeline);
+
+              $timeline.find('.twt__user').text('@' + timeline.user);
+              $timeline.find('.twt__timestamp').text(' ' + moment(timeline.created_at).fromNow());
+              // $timeline.find('.twt__timestamp').text(' ' + timeline.created_at.toUTCString());
+              $timeline.find('.twt__message').text(timeline.message);
+
+              result.push($timeline.html().trim())
+              index -= 1;
+            }
+            $('.twt__timeline').html('').show();
+
+            var $timelineHtml = $(result.join(''));
+            $timelineHtml.appendTo('.twt__timeline');
+          }
         }
+
         reload();
       });
-
-
 
       // Initial function
       // $(document).ready(function(){
