@@ -15,6 +15,9 @@ h2 {
   text-align: center;
 }
 
+.right {
+  float: right;
+}
 .container {
   margin: auto;
   width: 550px;
